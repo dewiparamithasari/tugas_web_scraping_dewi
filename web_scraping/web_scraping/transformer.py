@@ -15,7 +15,67 @@ def transform_money_format(string_money: str) -> str:
     return re.sub(r"[?\[M\]miliar|\[J\]juta]", "", half_clean_string)
 
 
-def transform(df: pd.DataFrame, tahun: int) -> pd.DataFrame:
+def transform2011(df: pd.DataFrame, tahun: int) -> pd.DataFrame:
+    logging.info("Transforming DataFrame ...")
+
+    columns_mapping = {
+        "Nomor Urut": "nomor_urut",
+        "Nama": "nama",
+        "Perusahaan/Pekerjaan": "perusahaan",
+        "Kekayaan Bersih (US$)": "kekayaan_bersih_usd",
+        "Umur": "umur"
+    }
+
+    renamed_df = df.rename(columns=columns_mapping)
+    renamed_df["tahun"] = tahun
+    renamed_df["kekayaan_bersih_usd_juta"] = renamed_df["kekayaan_bersih_usd"].apply(
+        lambda value: float(transform_money_format(value)) * 1000 if is_money_miliar(value) else float(transform_money_format(value))
+    )
+
+    return renamed_df[["nomor_urut", "tahun", "nama", "perusahaan", "kekayaan_bersih_usd_juta", "umur"]]
+
+
+def transform2013(df: pd.DataFrame, tahun: int) -> pd.DataFrame:
+    logging.info("Transforming DataFrame ...")
+
+    columns_mapping = {
+        "Nomor Urut": "nomor_urut",
+        "Nama": "nama",
+        "Perusahaan/Pekerjaan": "perusahaan",
+        "Kekayaan Bersih (US$)": "kekayaan_bersih_usd"
+    }
+
+    renamed_df = df.rename(columns=columns_mapping)
+    renamed_df["tahun"] = tahun
+    renamed_df["umur"] = ""
+    renamed_df["kekayaan_bersih_usd_juta"] = renamed_df["kekayaan_bersih_usd"].apply(
+        lambda value: float(transform_money_format(value)) * 1000 if is_money_miliar(value) else float(transform_money_format(value))
+    )
+
+    return renamed_df[["nomor_urut", "tahun", "nama", "perusahaan", "kekayaan_bersih_usd_juta", "umur"]]
+
+
+def transform2017(df: pd.DataFrame, tahun: int) -> pd.DataFrame:
+    logging.info("Transforming DataFrame ...")
+
+    columns_mapping = {
+        "Nomor Urut": "nomor_urut",
+        "Nama": "nama",
+        "Perusahaan/Pekerjaan": "perusahaan",
+        "Kekayaan Bersih (US$)": "kekayaan_bersih_usd"
+    }
+
+    renamed_df = df.rename(columns=columns_mapping)
+    renamed_df["tahun"] = tahun
+    renamed_df["umur"] = ""
+    renamed_df["kekayaan_bersih_usd_juta"] = renamed_df["kekayaan_bersih_usd"].apply(
+        lambda value: float(transform_money_format(value)) * 1000 if is_money_miliar(value) else float(transform_money_format(value))
+    )
+
+    return renamed_df[["nomor_urut", "tahun", "nama", "perusahaan", "kekayaan_bersih_usd_juta", "umur"]]
+
+
+def transform2019(df: pd.DataFrame, tahun: int) -> pd.DataFrame:
     logging.info("Transforming DataFrame ...")
 
     columns_mapping = {
@@ -27,9 +87,29 @@ def transform(df: pd.DataFrame, tahun: int) -> pd.DataFrame:
 
     renamed_df = df.rename(columns=columns_mapping)
     renamed_df["tahun"] = tahun
+    renamed_df["umur"] = ""
     renamed_df["kekayaan_bersih_usd_juta"] = renamed_df["kekayaan_bersih_usd"].apply(
         lambda value: float(transform_money_format(value)) * 1000 if is_money_miliar(value) else float(transform_money_format(value))
     )
 
-    return renamed_df[["nomor_urut", "tahun", "nama", "perusahaan", "kekayaan_bersih_usd_juta"]]
+    return renamed_df[["nomor_urut", "tahun", "nama", "perusahaan", "kekayaan_bersih_usd_juta", "umur"]]
 
+
+def transform2020(df: pd.DataFrame, tahun: int) -> pd.DataFrame:
+    logging.info("Transforming DataFrame ...")
+
+    columns_mapping = {
+        "Nomor Urut": "nomor_urut",
+        "Nama": "nama",
+        "Perusahaan": "perusahaan",
+        "Kekayaan Bersih (US$)": "kekayaan_bersih_usd"
+    }
+
+    renamed_df = df.rename(columns=columns_mapping)
+    renamed_df["tahun"] = tahun
+    renamed_df["umur"] = ""
+    renamed_df["kekayaan_bersih_usd_juta"] = renamed_df["kekayaan_bersih_usd"].apply(
+        lambda value: float(transform_money_format(value)) * 1000 if is_money_miliar(value) else float(transform_money_format(value))
+    )
+
+    return renamed_df[["nomor_urut", "tahun", "nama", "perusahaan", "kekayaan_bersih_usd_juta", "umur"]]
